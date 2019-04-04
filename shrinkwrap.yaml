@@ -3,7 +3,7 @@ dependencies:
   cors: 2.8.5
   express: 4.16.4
   mongodb: 3.1.13
-  mongoose: 5.4.19
+  mongoose: 5.4.21
   shortid: 2.2.14
 packages:
   /accepts/1.3.5:
@@ -302,7 +302,7 @@ packages:
       mongoose: '*'
     resolution:
       integrity: sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
-  /mongoose/5.4.19:
+  /mongoose/5.4.21:
     dependencies:
       async: 2.6.1
       bson: 1.1.1
@@ -320,7 +320,7 @@ packages:
     engines:
       node: '>=4.0.0'
     resolution:
-      integrity: sha512-paRU3nbCrPIUVw1GAlxo11uIIqrYORctUx1kcLj7i2NhkxPQuy5OK2/FYj8+tglsaixycmONSyop2HQp1IUQSA==
+      integrity: sha512-8teQZ/YUXv7+m5GaPDTmyoSJx7tPczZ99vM0/MS8GFCGVn8BKb5jQzuQCP62nBH4vN6Dmf0OiVKTFUkCpkVp+Q==
   /mpath/0.5.1:
     dev: false
     engines:
@@ -551,5 +551,5 @@ specifiers:
   cors: ^2.8.5
   express: ^4.16.4
   mongodb: ^3.1.11
-  mongoose: ^5.4.19
+  mongoose: ^5.4.21
   shortid: ^2.2.14
