@@ -31,10 +31,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/exercise/users', (req, res, next) => {
-  User.find({}, '_id username', (err, docs) => {
+  User.find({}, '_id username', (err, users) => {
     if (err) next(err);
-    if (docs.length === 0) return res.send('No users yet in the database.');
-    res.status(201).json(docs);
+    if (users.length === 0) return res.send('No users yet in the database.');
+    res.status(201).json(users);
   });
 });
 
@@ -44,10 +44,10 @@ app.get('/api/exercise/log', (req, res, next) => {
   const fromString = (from && dateValidation.test(from)) ? new Date(from.replace('-', ',')).toDateString() : undefined;
   const toString = to ? new Date(to.replace('-', ',')).toDateString() : undefined;
   if (!userId) res.send('UserId Required');
-  User.findOne({ _id: userId }, (err, doc) => {
+  User.findOne({ _id: userId }, (err, user) => {
     if (err) next(err);
-    if (!doc) return res.send('Unknown UserId');
-    let { _id, username, log } = doc;
+    if (!user) return res.send('Unknown UserId');
+    let { _id, username, log } = user;
     if (from) log = log.filter(exercise => new Date(exercise.date) >= new Date(from));
     if (to) log = log.filter(exercise => new Date(exercise.date) <= new Date(to));
     if (limit) log = log.slice(0, limit);
@@ -61,12 +61,12 @@ app.post('/api/exercise/new-user', (req, res, next) => {
   const _id = crypto.randomBytes(7).toString('base64').replace(/\W/g, '0').slice(-9);
   const newUser = new User({ _id, username });
   if (!username) res.send('username is required');
-  User.findOne({ username }, '_id username', (err, doc) => {
+  User.findOne({ username }, '_id username', (err, user) => {
     if (err) next(err);
-    if (doc) return res.status(201).json(doc);
-    newUser.save((err, doc) => {
+    if (user) return res.status(201).json(user);
+    newUser.save((err, user) => {
       if (err) next(err);
-      const { _id, username } = doc;
+      const { _id, username } = user;
       res.status(201).json({ _id, username });
     });
   });
@@ -82,14 +82,14 @@ app.post('/api/exercise/add', (req, res, next) => {
   if (!userId || !description || !duration) res.send('Please fill in required fields');
   if (!minsValidation.test(duration)) res.send('Invalid Duration');
   if (date && !dateValidation.test(date)) res.send('Invalid Date');
-  User.findById({ _id: userId }, (err, doc) => {
+  User.findById({ _id: userId }, (err, user) => {
     if (err) next(err);
-    if (!doc) return res.send('Unknown UserId');
-    let { _id, username, log, count } = doc;
+    if (!user) return res.send('Unknown UserId');
+    let { _id, username, log, count } = user;
     log.push({ description: descriptionString, duration: Number(duration), date: dateString });
     log.sort((a, b) => new Date(b.date) - new Date(a.date));
     count = log.length;
-    doc.save((err, doc) => {
+    user.save((err, user) => {
       if (err) next(err);
       res.json({ _id, username, count, log });
     });
