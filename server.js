@@ -46,13 +46,22 @@ app.get('/api/exercise/log', (req, res, next) => {
   if (!userId) res.send('UserId Required');
   User.findOne({ _id: userId }, (err, user) => {
     if (err) next(err);
-    if (!user) return res.send('Unknown UserId');
     let { _id, username, log } = user;
-    if (from) log = log.filter(exercise => new Date(exercise.date) >= new Date(from));
-    if (to) log = log.filter(exercise => new Date(exercise.date) <= new Date(to));
-    if (limit) log = log.slice(0, limit);
-    const count = log.length;
-    res.status(201).json({ _id, username, from: fromString, to: toString, count, log });
+    switch (user) {
+      case from:
+        log = log.filter(exercise => { 
+          new Date(exercise.date) >= new Date(from); 
+        });
+      case to:
+        log = log.filter(exercise => { 
+          new Date(exercise.date) <= new Date(to); 
+        });
+      case limit:
+        log = log.slice(0, limit);
+      default:
+        return res.send('Unknown UserId');
+    }
+    res.status(201).json({ _id, username, from: fromString, to: toString, count: log.length, log });
   });
 });
 
