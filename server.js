@@ -58,6 +58,7 @@ app.get('/api/exercise/log', (req, res, next) => {
         });
       case limit:
         log = log.slice(0, limit);
+        break;
       default:
         return res.send('Unknown UserId');
     }
